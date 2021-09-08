@@ -1,7 +1,6 @@
 package steps.ui;
 
 import controllers.ui.UIActions;
-import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,15 +19,15 @@ public class OnlineShopSteps {
     public static void addItemToShoppingCart(UIActions uiActions) {
         uiActions.clickDOMElement(ADD_TO_CART_BUTTON);
         uiActions.shouldSee(PRODUCT_ADDED_CONFIRMATION);
+        uiActions.click(CLOSE_PRODUCT_ADDED_POPUP_BUTTON);
         LOGGER.info("Product added to cart successfully");
     }
 
     public static void removeItemFromShoppingCart(UIActions uiActions) {
-        uiActions.click(CLOSE_PRODUCT_ADDED_POPUP_BUTTON);
         uiActions.clickDOMElement(REMOVE_FIRST_ITEM_FROM_CART_BUTTON);
         uiActions.shouldSee(EMPTY_CART_LABEL);
-        String actualEmptyCartText = uiActions.getElementText(EMPTY_CART_LABEL);
-        Assertions.assertEquals(EXPECTED_EMPTY_CART_TEXT, actualEmptyCartText);
+        uiActions.textShouldBeEqualsTo(EMPTY_CART_LABEL, EXPECTED_EMPTY_CART_TEXT);
+        LOGGER.info("Product removed from shopping cart successfully");
     }
 
     public static void searchForExistentItems(UIActions uiActions) {
@@ -36,6 +35,7 @@ public class OnlineShopSteps {
         uiActions.click(SEARCH_BUTTON);
         uiActions.shouldSee(SEARCH_COUNTER);
         uiActions.textShouldBeEqualsTo(SEARCH_COUNTER, EXPECTED_POSITIVE_SEARCH_RESULTS_TEXT);
+        LOGGER.info("Search results displayed");
     }
 
     public static void searchForNonExistentItems(UIActions uiActions) {
@@ -43,10 +43,12 @@ public class OnlineShopSteps {
         uiActions.click(SEARCH_BUTTON);
         uiActions.shouldSee(SEARCH_COUNTER);
         uiActions.textShouldBeEqualsTo(SEARCH_COUNTER, EXPECTED_NEGATIVE_SEARCH_RESULTS_TEXT);
+        LOGGER.info("No search results displayed");
     }
 
     public static void validateStoreInformation(UIActions uiActions) {
         uiActions.scrollDownToElement(STORE_INFORMATION_DIV);
         uiActions.textShouldBeEqualsTo(STORE_INFORMATION, EXPECTED_STORE_INFORMATION);
+        LOGGER.info("Store information validated successfully");
     }
 }
